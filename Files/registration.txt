@@ -1,0 +1,4 @@
+﻿name,semester,classes
+Rodney,Spring 2022,English|Computer
+Tom,Fall 2022,History|Math|Literature
+Dante,Spring 2023,Chemistry|Economics|Spanish
