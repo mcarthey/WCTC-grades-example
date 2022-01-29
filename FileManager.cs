@@ -9,7 +9,7 @@ using Spectre.Console;
 
 namespace Grades
 {
-    internal class FileManager
+    internal class FileManager : IFileManager
     {
         public const string filePath = "Files/registration.txt";
         private readonly TextInfo _textInfo;
@@ -23,17 +23,14 @@ namespace Grades
 
         public void Write(DataModel dataModelInput)
         {
-            if (dataModelInput == null)
-            {
-                return;
-            }
-            var records = new List<DataModel>() { dataModelInput };
+            if (dataModelInput == null) return;
+            var records = new List<DataModel> {dataModelInput};
 
             // Append to the file.
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 // Don't write the header again.
-                HasHeaderRecord = false,
+                HasHeaderRecord = false
             };
 
             using var writer = new StreamWriter(filePath, true);
@@ -53,7 +50,7 @@ namespace Grades
             {
                 PrepareHeaderForMatch = args => args.Header.ToLower()
             };
-            
+
             using var reader = new StreamReader(filePath);
 
             using (var csv = new CsvReader(reader, config))

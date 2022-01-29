@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
@@ -23,16 +19,13 @@ namespace Grades.Models
             var list = new List<string>();
             var array = text.Split('|');
 
-            foreach (var s in array)
-            {
-                list.Add(s);
-            }
+            foreach (var s in array) list.Add(s);
             return list;
         }
 
         public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
         {
-            return string.Join('|', (List<string>)value);
+            return string.Join('|', (List<string>) value);
         }
     }
 

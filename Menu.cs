@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Grades.Models;
 using Spectre.Console;
 
@@ -13,27 +8,30 @@ namespace Grades
     {
         public enum MenuOptions
         {
-            Add, Read, Exit
+            Add,
+            Read,
+            Exit
         }
 
-        readonly DataModel _dataModel = new DataModel();
-        public DataModel DataModel { get; set; }
+        private readonly DataModel _dataModel = new();
 
         public Menu()
         {
             DataModel = _dataModel;
         }
 
+        public DataModel DataModel { get; set; }
+
         public MenuOptions ChooseAction()
         {
             var menuOptions = Enum.GetNames(typeof(MenuOptions));
 
-            var choice= AnsiConsole.Prompt(
+            var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title("Choose your [green]menu action[/]?")
                     .AddChoices(menuOptions));
 
-            return (MenuOptions)Enum.Parse(typeof(MenuOptions), choice);
+            return (MenuOptions) Enum.Parse(typeof(MenuOptions), choice);
         }
 
         public void GetUserInput()
@@ -53,11 +51,8 @@ namespace Grades
                     .InstructionsText(
                         "[grey](Press [blue]<space>[/] to toggle a class, " +
                         "[green]<enter>[/] to accept)[/]")
-                    .AddChoices(new[] {
-                        "History", "English", "Spanish",
-                        "Math", "Computer", "Literature",
-                        "Science", "Chemistry", "Economics",
-                    }));
+                    .AddChoices("History", "English", "Spanish", "Math", "Computer", "Literature", "Science",
+                        "Chemistry", "Economics"));
         }
 
         public void Exit()

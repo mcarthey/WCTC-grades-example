@@ -1,46 +1,28 @@
 ﻿using System;
-using Spectre.Console;
+using Grades.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Grades
 {
-    internal class Program
+    public class Program
     {
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            RegisterExceptionHandler();
+            IServiceCollection services = new ServiceCollection();
+            var startup = new Startup();
+            startup.ConfigureServices(services);
+            IServiceProvider serviceProvider = services.BuildServiceProvider();
 
-            var menu = new Menu();
-            var fileManager = new FileManager();
+            //configure console logging
+            var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            var logger = loggerFactory.CreateLogger("Program");
 
-            Menu.MenuOptions menuChoice;
-            do
-            {
-                menuChoice = menu.ChooseAction();
+            logger.LogDebug("Logger is working!");
 
-                switch (menuChoice)
-                {
-                    case Menu.MenuOptions.Add:
-                        menu.GetUserInput();
-                        fileManager.Write(menu.DataModel);
-                        break;
-                    case Menu.MenuOptions.Read:
-                        fileManager.Read();
-                        fileManager.Display();
-                        break;
-                }
-            } while (menuChoice != Menu.MenuOptions.Exit);
-
-            menu.Exit();
-        }
-
-        public static void RegisterExceptionHandler()
-        {
-            AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
-            {
-                AnsiConsole.WriteException(eventArgs.Exception,
-                    ExceptionFormats.ShortenPaths | ExceptionFormats.ShortenTypes |
-                    ExceptionFormats.ShortenMethods | ExceptionFormats.ShowLinks);
-            };
+            // Get Service and call method
+            var service = serviceProvider.GetService<IMenuService>();
+            service.Invoke();
         }
     }
 }
