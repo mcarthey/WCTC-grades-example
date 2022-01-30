@@ -5,19 +5,23 @@ using System.Linq;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Grades.Models;
+using Grades.Services;
+using Microsoft.Extensions.Logging;
 using Spectre.Console;
 
 namespace Grades.Dao
 {
     internal class GradesDao : IGradesDao
     {
+        private readonly ILogger<MenuService> _logger;
         public const string filePath = "Files/registration.txt";
         private readonly TextInfo _textInfo;
 
         private List<DataModel> _fileRecords;
 
-        public GradesDao()
+        public GradesDao(ILogger<MenuService> logger)
         {
+            _logger = logger;
             _textInfo = new CultureInfo("en-US", false).TextInfo;
         }
 
@@ -35,6 +39,7 @@ namespace Grades.Dao
 
             using var writer = new StreamWriter(filePath, true);
 
+            _logger.LogInformation("Writing data file");
             using (var csv = new CsvWriter(writer, config))
             {
                 csv.Context.RegisterClassMap<DataModelMap>();
@@ -53,6 +58,7 @@ namespace Grades.Dao
 
             using var reader = new StreamReader(filePath);
 
+            _logger.LogInformation("Reading data file");
             using (var csv = new CsvReader(reader, config))
             {
                 csv.Context.RegisterClassMap<DataModelMap>();

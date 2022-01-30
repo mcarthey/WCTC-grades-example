@@ -1,19 +1,22 @@
-﻿using System;
-using Grades.Dao;
-using Microsoft.Extensions.Configuration;
+﻿using Grades.Dao;
 using Microsoft.Extensions.Logging;
-using Spectre.Console;
 
 namespace Grades.Services
 {
     internal class MenuService : IMenuService
     {
         private readonly ILogger<MenuService> _logger;
+        private readonly IGradesDao _dao;
+
+        public MenuService(ILogger<MenuService> logger, IGradesDao dao)
+        {
+            _logger = logger;
+            _dao = dao;
+        }
 
         public void Invoke()
         {
             var menu = new Menu();
-            var fileManager = new GradesDao();
 
             Menu.MenuOptions menuChoice;
             do
@@ -23,12 +26,14 @@ namespace Grades.Services
                 switch (menuChoice)
                 {
                     case Menu.MenuOptions.Add:
+                        _logger.LogInformation("Adding new grades");
                         menu.GetUserInput();
-                        fileManager.Write(menu.DataModel);
+                        _dao.Write(menu.DataModel);
                         break;
                     case Menu.MenuOptions.Read:
-                        fileManager.Read();
-                        fileManager.Display();
+                        _logger.LogInformation("Displaying grades");
+                        _dao.Read();
+                        _dao.Display();
                         break;
                 }
             } while (menuChoice != Menu.MenuOptions.Exit);

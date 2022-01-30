@@ -1,27 +1,26 @@
 ﻿using System;
+using Grades.Dao;
 using Grades.Services;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Spectre.Console;
 
 namespace Grades
 {
     public class Startup
     {
-        public Startup()
-        {
-            var builder = new ConfigurationBuilder();
-            Configuration = builder.Build();
-        }
-
-        private IConfigurationRoot Configuration { get; }
-
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddLogging();
-            services.AddSingleton(Configuration);
+            // register services
+            // https://www.c-sharpcorner.com/article/understanding-addtransient-vs-addscoped-vs-addsingleton-in-asp-net-core/
+            services.AddLogging(builder =>
+            {
+                builder.AddConsole();
+                builder.AddFile("app.log", true);
+            });
             services.AddSingleton<IMenuService, MenuService>();
-
+            services.AddTransient<IGradesDao, GradesDao>();
+                
             RegisterExceptionHandler();
         }
 
