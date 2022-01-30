@@ -1,6 +1,8 @@
-﻿using Grades.Services;
+﻿using System;
+using Grades.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Spectre.Console;
 
 namespace Grades
 {
@@ -9,8 +11,6 @@ namespace Grades
         public Startup()
         {
             var builder = new ConfigurationBuilder();
-            //.AddJsonFile("appsettings.json");
-
             Configuration = builder.Build();
         }
 
@@ -21,6 +21,18 @@ namespace Grades
             services.AddLogging();
             services.AddSingleton(Configuration);
             services.AddSingleton<IMenuService, MenuService>();
+
+            RegisterExceptionHandler();
+        }
+
+        public static void RegisterExceptionHandler()
+        {
+            AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
+            {
+                AnsiConsole.WriteException(eventArgs.Exception,
+                    ExceptionFormats.ShortenPaths | ExceptionFormats.ShortenTypes |
+                    ExceptionFormats.ShortenMethods | ExceptionFormats.ShowLinks);
+            };
         }
     }
 }

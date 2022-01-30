@@ -9,11 +9,6 @@ namespace Grades.Services
     {
         private readonly ILogger<MenuService> _logger;
 
-        public MenuService(ILoggerFactory loggerFactory, IConfigurationRoot config)
-        {
-            RegisterExceptionHandler();
-        }
-
         public void Invoke()
         {
             var menu = new Menu();
@@ -38,16 +33,6 @@ namespace Grades.Services
             } while (menuChoice != Menu.MenuOptions.Exit);
 
             menu.Exit();
-        }
-
-        public static void RegisterExceptionHandler()
-        {
-            AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
-            {
-                AnsiConsole.WriteException(eventArgs.Exception,
-                    ExceptionFormats.ShortenPaths | ExceptionFormats.ShortenTypes |
-                    ExceptionFormats.ShortenMethods | ExceptionFormats.ShowLinks);
-            };
         }
     }
 }
