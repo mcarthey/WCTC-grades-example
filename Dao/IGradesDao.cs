@@ -1,8 +1,8 @@
 ﻿using Grades.Models;
 
-namespace Grades
+namespace Grades.Dao
 {
-    internal interface IFileManager
+    internal interface IGradesDao
     {
         void Write(DataModel dataModelInput);
         void Read();

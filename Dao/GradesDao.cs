@@ -7,16 +7,16 @@ using CsvHelper.Configuration;
 using Grades.Models;
 using Spectre.Console;
 
-namespace Grades
+namespace Grades.Dao
 {
-    internal class FileManager : IFileManager
+    internal class GradesDao : IGradesDao
     {
         public const string filePath = "Files/registration.txt";
         private readonly TextInfo _textInfo;
 
         private List<DataModel> _fileRecords;
 
-        public FileManager()
+        public GradesDao()
         {
             _textInfo = new CultureInfo("en-US", false).TextInfo;
         }

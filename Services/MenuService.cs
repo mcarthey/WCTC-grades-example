@@ -1,4 +1,5 @@
 ﻿using System;
+using Grades.Dao;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Spectre.Console;
@@ -12,7 +13,7 @@ namespace Grades.Services
         public void Invoke()
         {
             var menu = new Menu();
-            var fileManager = new FileManager();
+            var fileManager = new GradesDao();
 
             Menu.MenuOptions menuChoice;
             do

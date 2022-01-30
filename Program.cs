@@ -22,7 +22,7 @@ namespace Grades
 
             // Get Service and call method
             var service = serviceProvider.GetService<IMenuService>();
-            service.Invoke();
+            service?.Invoke();
         }
     }
 }
