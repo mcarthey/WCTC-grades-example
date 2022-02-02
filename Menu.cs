@@ -15,12 +15,12 @@ namespace Grades
 
         private readonly DataModel _dataModel = new();
 
+        public DataModel DataModel { get; set; }
+
         public Menu()
         {
             DataModel = _dataModel;
         }
-
-        public DataModel DataModel { get; set; }
 
         public MenuOptions ChooseAction()
         {
@@ -32,6 +32,14 @@ namespace Grades
                     .AddChoices(menuOptions));
 
             return (MenuOptions) Enum.Parse(typeof(MenuOptions), choice);
+        }
+
+        public void Exit()
+        {
+            AnsiConsole.Write(
+                new FigletText("Thanks!")
+                    .LeftAligned()
+                    .Color(Color.Green));
         }
 
         public void GetUserInput()
@@ -53,14 +61,6 @@ namespace Grades
                         "[green]<enter>[/] to accept)[/]")
                     .AddChoices("History", "English", "Spanish", "Math", "Computer", "Literature", "Science",
                         "Chemistry", "Economics"));
-        }
-
-        public void Exit()
-        {
-            AnsiConsole.Write(
-                new FigletText("Thanks!")
-                    .LeftAligned()
-                    .Color(Color.Green));
         }
     }
 }

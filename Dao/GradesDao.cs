@@ -13,8 +13,8 @@ namespace Grades.Dao
 {
     internal class GradesDao : IGradesDao
     {
-        private readonly ILogger<MenuService> _logger;
         public const string filePath = "Files/registration.txt";
+        private readonly ILogger<MenuService> _logger;
         private readonly TextInfo _textInfo;
 
         private List<DataModel> _fileRecords;
@@ -23,49 +23,6 @@ namespace Grades.Dao
         {
             _logger = logger;
             _textInfo = new CultureInfo("en-US", false).TextInfo;
-        }
-
-        public void Write(DataModel dataModelInput)
-        {
-            if (dataModelInput == null) return;
-            var records = new List<DataModel> {dataModelInput};
-
-            // Append to the file.
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                // Don't write the header again.
-                HasHeaderRecord = false
-            };
-
-            using var writer = new StreamWriter(filePath, true);
-
-            _logger.LogInformation("Writing data file");
-            using (var csv = new CsvWriter(writer, config))
-            {
-                csv.Context.RegisterClassMap<DataModelMap>();
-                csv.WriteRecords(records);
-            }
-
-            writer.Close();
-        }
-
-        public void Read()
-        {
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                PrepareHeaderForMatch = args => args.Header.ToLower()
-            };
-
-            using var reader = new StreamReader(filePath);
-
-            _logger.LogInformation("Reading data file");
-            using (var csv = new CsvReader(reader, config))
-            {
-                csv.Context.RegisterClassMap<DataModelMap>();
-                _fileRecords = csv.GetRecords<DataModel>().ToList();
-            }
-
-            reader.Close();
         }
 
         public void Display()
@@ -94,6 +51,53 @@ namespace Grades.Dao
 
                 AnsiConsole.Write(panel);
             }
+        }
+
+        public void Read()
+        {
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                PrepareHeaderForMatch = args => args.Header.ToLower()
+            };
+
+            using var reader = new StreamReader(filePath);
+
+            _logger.LogInformation("Reading data file");
+            using (var csv = new CsvReader(reader, config))
+            {
+                csv.Context.RegisterClassMap<DataModelMap>();
+                _fileRecords = csv.GetRecords<DataModel>().ToList();
+            }
+
+            reader.Close();
+        }
+
+        public void Write(DataModel dataModelInput)
+        {
+            if (dataModelInput == null)
+            {
+                return;
+            }
+
+            var records = new List<DataModel> {dataModelInput};
+
+            // Append to the file.
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                // Don't write the header again.
+                HasHeaderRecord = false
+            };
+
+            using var writer = new StreamWriter(filePath, true);
+
+            _logger.LogInformation("Writing data file");
+            using (var csv = new CsvWriter(writer, config))
+            {
+                csv.Context.RegisterClassMap<DataModelMap>();
+                csv.WriteRecords(records);
+            }
+
+            writer.Close();
         }
     }
 }

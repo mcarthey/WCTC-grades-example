@@ -16,11 +16,11 @@ namespace Grades
             services.AddLogging(builder =>
             {
                 builder.AddConsole();
-                builder.AddFile("app.log", true);
+                builder.AddFile("app.log");
             });
             services.AddSingleton<IMenuService, MenuService>();
             services.AddTransient<IGradesDao, GradesDao>();
-                
+
             RegisterExceptionHandler();
         }
 

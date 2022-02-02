@@ -5,8 +5,8 @@ namespace Grades.Services
 {
     internal class MenuService : IMenuService
     {
-        private readonly ILogger<MenuService> _logger;
         private readonly IGradesDao _dao;
+        private readonly ILogger<MenuService> _logger;
 
         public MenuService(ILogger<MenuService> logger, IGradesDao dao)
         {
@@ -36,7 +36,8 @@ namespace Grades.Services
                         _dao.Display();
                         break;
                 }
-            } while (menuChoice != Menu.MenuOptions.Exit);
+            }
+            while (menuChoice != Menu.MenuOptions.Exit);
 
             menu.Exit();
         }

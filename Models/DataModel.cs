@@ -7,9 +7,9 @@ namespace Grades.Models
 {
     public class DataModel
     {
+        public List<string> Classes { get; set; }
         public string Name { get; set; }
         public string Semester { get; set; }
-        public List<string> Classes { get; set; }
     }
 
     public class ListConverter : DefaultTypeConverter
@@ -19,7 +19,11 @@ namespace Grades.Models
             var list = new List<string>();
             var array = text.Split('|');
 
-            foreach (var s in array) list.Add(s);
+            foreach (var s in array)
+            {
+                list.Add(s);
+            }
+
             return list;
         }
 

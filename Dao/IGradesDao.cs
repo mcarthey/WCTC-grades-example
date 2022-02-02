@@ -4,8 +4,8 @@ namespace Grades.Dao
 {
     internal interface IGradesDao
     {
-        void Write(DataModel dataModelInput);
-        void Read();
         void Display();
+        void Read();
+        void Write(DataModel dataModelInput);
     }
 }
